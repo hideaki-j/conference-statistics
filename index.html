@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGIR 2024 Download Rankings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Merriweather', Georgia, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #00355f;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2.2em;
+            border-bottom: 2px solid #00355f;
+            padding-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #00355f;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            text-align: left;
+            font-family: 'Open Sans', Arial, sans-serif;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+        .rank, .downloads, .article-type, .top-percent {
+            text-align: center;
+        }
+        .title {
+            text-align: left;
+        }
+        .article-type {
+            text-transform: capitalize;
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:before {
+                position: absolute;
+                top: 12px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.85em;
+                color: #00355f;
+                text-align: left;
+                font-family: 'Open Sans', Arial, sans-serif;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .data-explanation-container {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .data-explanation {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            gap: 20px;
+        }
+
+        .data-explanation h2 {
+            font-size: 1em;
+            color: #00355f;
+            margin: 0;
+            font-family: 'Merriweather', Georgia, serif;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .data-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        .data-info p {
+            margin: 0;
+            font-size: 0.85em;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        .data-info strong {
+            color: #00355f;
+            font-weight: 600;
+        }
+
+        .data-info a {
+            color: #0077be;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .data-info a:hover {
+            color: #00355f;
+            text-decoration: underline;
+        }
+
+        .divider {
+            width: 1px;
+            height: 30px;
+            background-color: #ccc;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .data-explanation {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .data-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .divider {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>SIGIR 2024 Download Rankings (Top 50)</h1>
+        
+        <!-- Redesigned "About This Data" section -->
+        <div class="data-explanation-container">
+            <div class="data-explanation">
+                <h2>About This Data</h2>
+                <div class="divider"></div>
+                <div class="data-info">
+                    <p>
+                        <strong>Source:</strong>Manually copied and pasted from the 
+                        <a href="https://dl.acm.org/doi/proceedings/10.1145/3626772" target="_blank" rel="noopener noreferrer">
+                            Proceedings of the 47th International ACM SIGIR Conference
+                        </a>.
+                    </p>
+                    <div class="divider"></div>
+                    <p><strong>Last Updated:</strong> October 16, 2024</p>
+                </div>
+            </div>
+        </div>
+        
+        <table id="rankings-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Title</th>
+                    <th>Downloads</th>
+                    <th>Article Type</th>
+                    <th>Top %</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table body will be populated dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Load the external data file -->
+    <script src="results/sigir24_statistics.js"></script>
+
+    <!-- Script to populate the table -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.querySelector('#rankings-table tbody');
+            
+            // Slice the sigirData array to get only the top 50 items
+            const top50Data = sigirData.slice(0, 50);
+            
+            top50Data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                let titleDisplay = item.title;
+                
+                // Add emojis for top 3 ranks at the beginning of the title
+                if (index === 0) titleDisplay = '🥇 ' + titleDisplay;
+                else if (index === 1) titleDisplay = '🥈 ' + titleDisplay;
+                else if (index === 2) titleDisplay = '🥉 ' + titleDisplay;
+                
+                row.innerHTML = `
+                    <td data-label="Rank" class="rank">${item.rank}</td>
+                    <td data-label="Title" class="title">${titleDisplay}</td>
+                    <td data-label="Downloads" class="downloads">${item.downloads}</td>
+                    <td data-label="Article Type" class="article-type">${item.article_type}</td>
+                    <td data-label="Top %" class="top-percent">${item['top %'] || 'N/A'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
