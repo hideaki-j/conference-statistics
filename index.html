@@ -64,46 +64,26 @@
             color: #666;
         }
         @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
-                display: block;
+            .container {
+                padding: 20px 10px;
             }
-            thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
+            
+            table {
+                font-size: 0.9em;
             }
-            tr {
-                margin-bottom: 15px;
-                border: 1px solid #ddd;
+            
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
             }
-            td {
-                border: none;
-                position: relative;
-                padding-left: 50%;
-                text-align: right;
+            
+            table {
+                min-width: 600px;
             }
-            td:before {
-                position: absolute;
-                top: 12px;
-                left: 6px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                content: attr(data-label);
-                font-weight: 600;
-                text-transform: uppercase;
-                font-size: 0.85em;
-                color: #00355f;
-                text-align: left;
-                font-family: 'Open Sans', Arial, sans-serif;
+            
+            th, td {
+                padding: 8px 10px;
             }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .data-explanation-container {
