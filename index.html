@@ -63,7 +63,7 @@
             text-transform: capitalize;
             color: #666;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             table, thead, tbody, th, td, tr {
                 display: block;
             }
@@ -243,7 +243,7 @@
                 <tr>
                     <th>Rank</th>
                     <th>Title</th>
-                    <th>Downloads</th>
+                    <th>DL.</th>
                     <th>Article Type</th>
                     <th>Top %</th>
                 </tr>
@@ -277,7 +277,7 @@
                 row.innerHTML = `
                     <td data-label="Rank" class="rank">${item.rank}</td>
                     <td data-label="Title" class="title">${titleDisplay}</td>
-                    <td data-label="Downloads" class="downloads">${item.downloads}</td>
+                    <td data-label="DL." class="downloads">${item.downloads}</td>
                     <td data-label="Article Type" class="article-type">${item.article_type}</td>
                     <td data-label="Top %" class="top-percent">${item['top %'] || 'N/A'}</td>
                 `;
