@@ -95,7 +95,7 @@ def dataframe_to_js_dict(df):
     return js_string
 
 # Read the file content: this is the copied and pasted text from the ACM website
-file_path = 'data/241015/241015 Proceedings of the 47th International ACM SIGIR Conference.txt'
+file_path = '../data/241015/241018 Proceedings of the 47th International ACM SIGIR Conference.txt'
 with open(file_path, 'r', encoding='utf-8') as file:
     file_content = file.read()
 
