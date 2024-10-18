@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import json
+import argparse  # Add this import
 
 # Update the function to ensure that no lines are omitted, including those without "Pages" or "Page"
 def get_info_from_copy_and_pasted_text(text):
@@ -94,8 +95,15 @@ def dataframe_to_js_dict(df):
     
     return js_string
 
+# Update this block near the top of the script, after imports
+parser = argparse.ArgumentParser(description='Process SIGIR conference data.')
+parser.add_argument('--file_path', type=str, help='Path to the input text file', required=True)
+args = parser.parse_args()
+
+# Use args.file_path instead of args.file_path in the rest of your script
+file_path = args.file_path
+
 # Read the file content: this is the copied and pasted text from the ACM website
-file_path = '../data/241015/241018 Proceedings of the 47th International ACM SIGIR Conference.txt'
 with open(file_path, 'r', encoding='utf-8') as file:
     file_content = file.read()
 
