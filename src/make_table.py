@@ -2,6 +2,51 @@ import pandas as pd
 import os
 import json
 import argparse  # Add this import
+import re
+
+
+def split_citations_and_downloads(num_str, max_download=20000):
+    digits = num_str.replace(',', '')
+    if not digits or not digits.isdigit():
+        return None, None
+
+    candidates = []
+    max_download_len = min(5, len(digits))
+
+    for download_len in range(1, max_download_len + 1):
+        download_digits = digits[-download_len:]
+        citation_digits = digits[:-download_len]
+
+        if not citation_digits:
+            continue
+
+        if len(citation_digits) > 1 and citation_digits[0] == '0':
+            continue
+
+        download_val = int(download_digits)
+        if download_val > max_download:
+            continue
+
+        formatted_download = f"{download_val:,}"
+        if citation_digits + formatted_download == num_str:
+            citation_val = int(citation_digits)
+            candidates.append((citation_val, download_val, download_len))
+
+    if not candidates:
+        return None, int(digits)
+
+    def prefer(cands, predicate):
+        filtered = [c for c in cands if predicate(c)]
+        return filtered if filtered else cands
+
+    candidates = prefer(candidates, lambda c: c[0] <= 500)
+    candidates = prefer(candidates, lambda c: c[1] >= 100)
+    candidates = prefer(candidates, lambda c: c[1] <= 10000)
+
+    candidates.sort(key=lambda c: (c[1], -c[0]))
+    citation_val, download_val, _ = candidates[0]
+    return citation_val, download_val
+
 
 # Update the function to ensure that no lines are omitted, including those without "Pages" or "Page"
 def get_info_from_copy_and_pasted_text(text):
@@ -20,30 +65,30 @@ def get_info_from_copy_and_pasted_text(text):
             # Now check for "Pages" or "Page"
             for j in range(i, len(lines)):
                 if lines[j].startswith("Pages ") or lines[j].startswith("Page "):
-                    if j + 3 < len(lines):
-                        num_str = lines[j + 3].strip()  # Number is three lines after "Pages " or "Page "
-                        
-                        # If num_str is empty, check j + 4
-                        if not num_str and j + 4 < len(lines):
-                            num_str = lines[j + 4].strip()
-                        
-                        # If num_str is still empty, check j + 5
-                        if not num_str and j + 5 < len(lines):
-                            num_str = lines[j + 5].strip()
-                        
-                        if len(num_str) > 1:  # Ensure there are enough digits for citation and downloads
-                            citations = int(num_str[0])  # First digit for citations
-                            downloads = int(num_str[1:].replace(',', ''))  # Remaining digits for downloads
-                            # Article type logic
-                            if lines[j-3].strip().startswith("Best"):
-                                if lines[j-4].strip() == "Open Access":
-                                    article_type = lines[j-5].strip()  # Check five lines before if "Best" and "Open Access"
-                                else:
-                                    article_type = lines[j-4].strip()  # Check four lines before if only "Best"
-                            elif lines[j-3].strip() == "Open Access":
-                                article_type = lines[j-4].strip()  # Check four lines before if "Open Access"
+                    num_str = ""
+                    k = j + 1
+                    while k < len(lines):
+                        candidate = lines[k].strip()
+                        if candidate and re.fullmatch(r"[0-9,]+", candidate):
+                            num_str = candidate
+                            break
+                        k += 1
+
+                    if num_str:
+                        citations, downloads = split_citations_and_downloads(num_str)
+                        if downloads is None:
+                            downloads = int(num_str.replace(',', ''))
+
+                        if j - 3 >= 0 and lines[j-3].strip().startswith("Best"):
+                            if j - 4 >= 0 and lines[j-4].strip() == "Open Access":
+                                if j - 5 >= 0:
+                                    article_type = lines[j-5].strip()
                             else:
-                                article_type = lines[j-3].strip()  # Otherwise, three lines before
+                                article_type = lines[j-4].strip() if j - 4 >= 0 else ''
+                        elif j - 3 >= 0 and lines[j-3].strip() == "Open Access":
+                            article_type = lines[j-4].strip() if j - 4 >= 0 else ''
+                        else:
+                            article_type = lines[j-3].strip() if j - 3 >= 0 else ''
                     break
             
             results.append({
@@ -110,15 +155,17 @@ with open(file_path, 'r', encoding='utf-8') as file:
 # Apply the function to the file content
 df_results, match_count = get_info_from_copy_and_pasted_text(file_content)
 
-# Ensure the './results' directory exists
-os.makedirs('./results', exist_ok=True)
+# Ensure the results directory exists relative to the project root
+src_dir = os.path.dirname(os.path.abspath(__file__))
+results_dir = os.path.join(os.path.dirname(src_dir), 'results')
+os.makedirs(results_dir, exist_ok=True)
 
 # Save the DataFrame as a CSV file
-csv_output_path = '../results/sigir24_statistics.csv'
+csv_output_path = os.path.join(results_dir, 'sigir24_statistics.csv')
 df_results.to_csv(csv_output_path, index=False)
 
 # Save the data as a JavaScript file
-js_output_path = '../results/sigir24_statistics.js'
+js_output_path = os.path.join(results_dir, 'sigir24_statistics.js')
 js_content = dataframe_to_js_dict(df_results)
 with open(js_output_path, 'w', encoding='utf-8') as js_file:
     js_file.write(js_content)
